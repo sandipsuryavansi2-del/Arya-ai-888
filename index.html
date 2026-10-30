@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090d18">
+<meta name="description" content="Aryan AI Cloud — AI chat, study tools, PDF text helper and developer assistant.">
+<title>Aryan AI Cloud</title>
+<style>
+:root{color-scheme:dark;--bg:#080b13;--panel:#111827;--panel2:#0d1422;--line:#273247;--text:#eef3ff;--muted:#9aa8c2;--accent:#7c5cff;--accent2:#24d6c8;--danger:#ff7373}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#172044 0,#080b13 48%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;background:#090d18ed;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}.logo{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:900}.status{font-size:12px;color:#9de9d9;border:1px solid #285d5a;padding:4px 8px;border-radius:99px}
+.layout{max-width:1150px;margin:0 auto;padding:22px 16px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:18px}
+nav,.panel,.hero{background:#101725d9;border:1px solid var(--line);border-radius:18px}
+nav{padding:12px;height:max-content;position:sticky;top:78px}nav button{width:100%;display:flex;align-items:center;gap:10px;text-align:left;color:var(--muted);background:transparent;border:0;padding:12px;border-radius:11px;margin:2px 0}nav button.active,nav button:hover{color:#fff;background:#27264b}
+main{min-width:0}.hero{padding:22px;margin-bottom:16px;background:linear-gradient(120deg,#181c3b,#101725 70%)}.eyebrow{color:var(--accent2);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.hero h1{font-size:clamp(25px,5vw,38px);line-height:1.15;margin:8px 0}.hero p{color:var(--muted);margin:8px 0 0;max-width:650px}
+.panel{padding:18px}.panel h2{margin:0 0 5px;font-size:21px}.sub{color:var(--muted);margin:0 0 16px;font-size:13px}
+.chatbox{height:min(48vh,430px);min-height:240px;overflow:auto;padding:12px;background:#080d17;border:1px solid var(--line);border-radius:13px;margin-bottom:12px}
+.msg{white-space:pre-wrap;overflow-wrap:anywhere;padding:11px 13px;border-radius:13px;margin:8px 0;max-width:92%}.user{background:#29234d;margin-left:auto}.assistant{background:#172235;border:1px solid #27364f}.system{color:var(--muted);font-size:13px;padding:8px}
+.compose{display:flex;gap:8px}.compose textarea{resize:vertical;min-height:48px;max-height:150px;flex:1}
+input,textarea,select{width:100%;background:#080d17;color:var(--text);border:1px solid #34415a;border-radius:11px;padding:12px;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+.btn{border:0;border-radius:11px;padding:11px 15px;background:linear-gradient(135deg,var(--accent),#5946cb);color:white;font-weight:750}.btn:disabled{opacity:.55;cursor:wait}.btn.secondary{background:#202b3f;border:1px solid #35435b}.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{padding:15px;border:1px solid var(--line);border-radius:13px;background:#0c1320}.tile b{display:block;margin-bottom:4px}.tile span{font-size:13px;color:var(--muted)}
+.hidden{display:none!important}.notice{padding:11px 13px;border-radius:11px;background:#15263a;color:#b9c9e7;font-size:13px;margin:12px 0}.error{color:#ffb4b4}.ok{color:#9de9d9}.footer{color:#7f8ca5;font-size:12px;text-align:center;padding:22px}
+@media(max-width:720px){.layout{grid-template-columns:1fr;padding:12px;gap:12px}nav{position:static;display:flex;overflow:auto;gap:4px;padding:7px}nav button{width:auto;white-space:nowrap;padding:9px 11px}.hero{padding:18px}.panel{padding:13px}.grid{grid-template-columns:1fr}header{padding:10px 12px}.status{display:none}.compose{align-items:stretch}.compose .btn{padding:10px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">A</div><span>Aryan AI Cloud</span></div><span class="status">● Cloud workspace</span></header>
+<div class="layout">
+<nav aria-label="Main navigation">
+<button class="active" data-page="chat">💬 AI Chat</button>
+<button data-page="study">📚 PDF & Study</button>
+<button data-page="storage">☁️ Storage</button>
+<button data-page="developer">💻 Developer</button>
+<button data-page="admin">⚙️ Status</button>
+</nav>
+<main>
+<section class="hero"><div class="eyebrow">Your personal workspace</div><h1>Think, learn and build with Aryan AI.</h1><p>Ask questions, study your notes, get coding help, and use quick tools in one mobile-friendly place.</p></section>
+<section id="page-chat" class="panel page">
+<h2>AI Chat</h2><p class="sub">Ask a question. AI replies after a provider key is configured in Vercel.</p>
+<div id="chatbox" class="chatbox" aria-live="polite"><div class="system">Welcome! Send a message below to start chatting.</div></div>
+<form id="chatform"><div class="compose"><textarea id="prompt" required rows="2" placeholder="Ask Aryan AI anything…"></textarea><button id="send" class="btn" type="submit">Send ↗</button></div></form>
+<div class="btn-row"><button class="btn secondary quick" data-prompt="Explain this topic in simple English and Hindi: ">Study explanation</button><button class="btn secondary quick" data-prompt="Help me debug this code. Explain the fix step by step: ">Debug code</button><button id="clear" class="btn secondary">Clear chat</button></div>
+<div id="chatnotice" class="notice">Setup required: add AI_PROVIDER, AI_API_KEY and AI_MODEL in Vercel → Settings → Environment Variables, then redeploy.</div>
+</section>
+<section id="page-study" class="panel page hidden">
+<h2>PDF & Study</h2><p class="sub">Extract text from a text-based PDF or paste your notes to create a study summary.</p>
+<label for="pdffile">Choose PDF (text-based PDFs work best)</label><input id="pdffile" type="file" accept="application/pdf,.pdf">
+<label for="studytext" style="display:block;margin-top:12px">Or paste notes here</label><textarea id="studytext" rows="7" placeholder="Paste your notes or extracted PDF text…"></textarea>
+<div class="btn-row"><button id="extract" class="btn secondary">Extract PDF text</button><button id="summarize" class="btn">Summarize with AI</button></div><div id="studyout" class="notice">PDF extraction uses a browser PDF library; if it is unavailable, copy text from your PDF and paste it above.</div>
+</section>
+<section id="page-storage" class="panel page hidden">
+<h2>Private Storage — starter tool</h2><p class="sub">Select files to prepare a local download bundle. This demo does not upload or sync files to cloud storage yet.</p>
+<input id="storagefiles" type="file" multiple><div class="btn-row"><button id="listfiles" class="btn">Show selected files</button><button id="clearfiles" class="btn secondary">Clear list</button></div><div id="filelist" class="notice">No files selected.</div>
+</section>
+<section id="page-developer" class="panel page hidden">
+<h2>Developer Assistant</h2><p class="sub">Send code or an error message to the AI for help.</p>
+<select id="lang"><option>JavaScript</option><option>HTML/CSS</option><option>Python</option><option>C</option><option>C++</option><option>Java</option><option>SQL</option><option>Other</option></select>
+<textarea id="codeinput" rows="9" style="margin-top:10px" placeholder="Paste code or error message…"></textarea>
+<div class="btn-row"><button id="codehelp" class="btn">Explain / Debug</button></div><div id="codeout" class="notice">AI responses require a configured provider API key.</div>
+</section>
+<section id="page-admin" class="panel page hidden">
+<h2>Service Status</h2><p class="sub">Basic diagnostic screen. This is not a secure admin console or user-management system.</p>
+<div class="grid"><div class="tile"><b>Website</b><span class="ok">Frontend loaded</span></div><div class="tile"><b>AI endpoint</b><span id="apihealth">Not tested</span></div><div class="tile"><b>Cloud storage</b><span>Not configured</span></div><div class="tile"><b>Authentication</b><span>Not configured</span></div></div>
+<div class="btn-row"><button id="testapi" class="btn">Test AI endpoint</button><button id="health" class="btn secondary">Check endpoint status</button></div><div id="adminout" class="notice">For real accounts and cloud storage, configure Supabase separately.</div>
+</section>
+<div class="footer">Aryan AI Cloud · Mobile-first starter · Keep provider API keys server-side</div>
+</main>
+</div>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+document.querySelectorAll('nav button').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b===btn));
+ document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
+ $('page-'+btn.dataset.page).classList.remove('hidden');
+}));
+function addMsg(text,role){const d=document.createElement('div');d.className='msg '+role;d.textContent=text;$('chatbox').appendChild(d);$('chatbox').scrollTop=$('chatbox').scrollHeight;return d}
+async function askAI(message){
+ const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});
+ let data={};try{data=await r.json()}catch(e){}
+ if(!r.ok)throw new Error(data.error||('Request failed ('+r.status+'). Check Vercel function logs and environment variables.'));
+ return data.reply||data.choices?.[0]?.message?.content||'The AI provider returned an empty response.';
+}
+$('chatform').addEventListener('submit',async e=>{
+ e.preventDefault();const message=$('prompt').value.trim();if(!message)return;
+ addMsg(message,'user');$('prompt').value='';$('send').disabled=true;$('send').textContent='…';
+ const wait=addMsg('Thinking…','assistant');
+ try{wait.textContent=await askAI(message);$('chatnotice').textContent='AI request completed.';$('chatnotice').classList.remove('error')}
+ catch(err){wait.textContent='Could not get an AI reply: '+err.message;$('chatnotice').textContent='AI setup or endpoint error: '+err.message;$('chatnotice').classList.add('error')}
+ finally{$('send').disabled=false;$('send').textContent='Send ↗'}
+});
+document.querySelectorAll('.quick').forEach(b=>b.addEventListener('click',()=>{$('prompt').value=b.dataset.prompt;$('prompt').focus()}));
+$('clear').addEventListener('click',()=>{$('chatbox').innerHTML='<div class="system">Chat cleared. Ask another question.</div>'});
+$('summarize').addEventListener('click',async()=>{
+ const t=$('studytext').value.trim();if(!t){$('studyout').textContent='First paste notes or extract text from a PDF.';return}
+ $('studyout').textContent='Generating study summary…';
+ try{$('studyout').textContent=await askAI('Create clear exam-ready study notes from the following text. Include headings, key points, definitions and a short summary:\n\n'+t)}
+ catch(e){$('studyout').textContent='Could not summarize: '+e.message}
+});
+$('extract').addEventListener('click',async()=>{
+ const f=$('pdffile').files[0];if(!f){$('studyout').textContent='Choose a PDF first.';return}
+ $('studyout').textContent='This starter does not bundle a PDF parser. Open the PDF, copy its text, and paste it in the notes box. Then tap Summarize with AI.';
+});
+$('listfiles').addEventListener('click',()=>{const fs=[...$('storagefiles').files];$('filelist').textContent=fs.length?fs.map(f=>f.name+' — '+Math.ceil(f.size/1024)+' KB').join('\n'):'No files selected.'});
+$('clearfiles').addEventListener('click',()=>{$('storagefiles').value='';$('filelist').textContent='No files selected.'});
+$('codehelp').addEventListener('click',async()=>{const code=$('codeinput').value.trim();if(!code){$('codeout').textContent='Paste code or an error message first.';return}$('codeout').textContent='Working…';try{$('codeout').textContent=await askAI('You are a careful programming assistant. Language: '+$('lang').value+'. Explain the code or debug the error. Give the corrected code when useful, and explain the changes:\n\n'+code)}catch(e){$('codeout').textContent='Could not contact AI: '+e.message}});
+$('testapi').addEventListener('click',async()=>{ $('adminout').textContent='Sending test request…';try{$('adminout').textContent=await askAI('Reply with exactly: Aryan AI Cloud connection test successful.');$('apihealth').textContent='Responding';$('apihealth').className='ok'}catch(e){$('adminout').textContent=e.message;$('apihealth').textContent='Error — check setup';$('apihealth').className='error'}});
+$('health').addEventListener('click',async()=>{try{const r=await fetch('/api/chat',{method:'GET'});const d=await r.json();$('adminout').textContent=JSON.stringify(d,null,2);$('apihealth').textContent=r.ok?'Endpoint online':'Endpoint error'}catch(e){$('adminout').textContent='Could not reach /api/chat. Confirm api/chat.js exists in the GitHub repository and redeploy.';$('apihealth').textContent='Not reachable'}});
+})();
+</script>
+</body></html>
